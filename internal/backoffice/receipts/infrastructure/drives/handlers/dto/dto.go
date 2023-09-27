@@ -5,10 +5,11 @@ type ItemRequest struct {
 	Price            float64 `json:"price"`
 }
 
-type ReceiptsRequest struct {
+type ReceiptRequest struct {
+	Id           string        `json:"id"`
 	Retailer     string        `json:"retailer"`
 	PurchaseDate string        `json:"purchaseDate"`
 	PurchaseTime string        `json:"purchaseTime"`
 	Total        float64       `json:"total"`
-	ItemRequest  []ItemRequest `json:"items"`
+	ItemsRequest []ItemRequest `json:"items"`
 }
