@@ -34,7 +34,7 @@ func Test_HttpHandlerReceiptsCreator(t *testing.T) {
 				}`,
 			)),
 			HandlerFunc: func() (http.HandlerFunc, error) {
-				return HttpHandlerReceiptsCreator(*services.NewReciptCreator(memory.NewReciptInMemory())), nil
+				return HttpHandlerReceiptsCreator(services.NewReciptCreator(memory.NewReciptInMemory())), nil
 			},
 			expectedStatusCode: http.StatusCreated,
 		},
@@ -52,7 +52,7 @@ func Test_HttpHandlerReceiptsCreator(t *testing.T) {
 				}`,
 			)),
 			HandlerFunc: func() (http.HandlerFunc, error) {
-				return HttpHandlerReceiptsCreator(*services.NewReciptCreator(memory.NewReciptInMemory())), nil
+				return HttpHandlerReceiptsCreator(services.NewReciptCreator(memory.NewReciptInMemory())), nil
 			},
 			expectedStatusCode: http.StatusUnprocessableEntity,
 		},
@@ -77,14 +77,14 @@ func Test_HttpHandlerReceiptsCreator(t *testing.T) {
 					Total:        "2.65",
 				}
 
-				v, err := receipt.NewReceipt(receiptRequest)
+				v, err := receipt.NewReceipt(&receiptRequest)
 				if err != nil {
 					return nil, err
 				}
 
 				m := memory.NewReciptInMemory()
 				m.Add(v.ReceiptId, *v)
-				return HttpHandlerReceiptsCreator(*services.NewReciptCreator(m)), nil
+				return HttpHandlerReceiptsCreator(services.NewReciptCreator(m)), nil
 			},
 			expectedStatusCode: http.StatusBadRequest,
 		},
@@ -102,7 +102,7 @@ func Test_HttpHandlerReceiptsCreator(t *testing.T) {
 				}`,
 			)),
 			HandlerFunc: func() (http.HandlerFunc, error) {
-				return HttpHandlerReceiptsCreator(*services.NewReciptCreator(memory.NewReciptInMemory())), nil
+				return HttpHandlerReceiptsCreator(services.NewReciptCreator(memory.NewReciptInMemory())), nil
 			},
 			expectedStatusCode: http.StatusBadRequest,
 		},
@@ -120,7 +120,7 @@ func Test_HttpHandlerReceiptsCreator(t *testing.T) {
 				}`,
 			)),
 			HandlerFunc: func() (http.HandlerFunc, error) {
-				return HttpHandlerReceiptsCreator(*services.NewReciptCreator(memory.NewReciptInMemory())), nil
+				return HttpHandlerReceiptsCreator(services.NewReciptCreator(memory.NewReciptInMemory())), nil
 			},
 			expectedStatusCode: http.StatusBadRequest,
 		},
@@ -137,7 +137,7 @@ func Test_HttpHandlerReceiptsCreator(t *testing.T) {
 				}`,
 			)),
 			HandlerFunc: func() (http.HandlerFunc, error) {
-				return HttpHandlerReceiptsCreator(*services.NewReciptCreator(memory.NewReciptInMemory())), nil
+				return HttpHandlerReceiptsCreator(services.NewReciptCreator(memory.NewReciptInMemory())), nil
 			},
 			expectedStatusCode: http.StatusBadRequest,
 		},

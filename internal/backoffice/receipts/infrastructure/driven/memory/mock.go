@@ -12,7 +12,7 @@ import (
 )
 
 // ReceiptInMemory implements the ports.Saver interface
-var _ ports.Saver = &ReceiptInMemory{}
+var _ ports.ReceiptSaver = &ReceiptInMemory{}
 
 type ReceiptInMemory struct {
 	*set.Set[receipt.ReceiptId, receipt.Receipt]
@@ -24,7 +24,7 @@ func NewReciptInMemory() *ReceiptInMemory {
 	}
 }
 
-func (r *ReceiptInMemory) Save(_ context.Context, rc *receipt.Receipt) (_ receipt.ReceiptId, err error) {
+func (r *ReceiptInMemory) SaveReceipt(_ context.Context, rc *receipt.Receipt) (_ receipt.ReceiptId, err error) {
 	_, ok := r.Get(rc.ReceiptId)
 	if ok {
 		err = wrongs.StatusBadRequest(fmt.Sprintf("receipt with id '%s' already exists receipt", rc.ReceiptId.Value()))

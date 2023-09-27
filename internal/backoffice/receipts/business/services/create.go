@@ -5,24 +5,21 @@ import (
 
 	"github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/business/domain/receipt"
 	"github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/business/ports"
-	"github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/infrastructure/drives/handlers/dto"
 )
 
+// ReceiptCreator implements the ports.ReceiptCreator interface
+var _ ports.ReceiptCreator = &ReceiptCreator{}
+
 type ReceiptCreator struct {
-	ports.Saver
+	ports.ReceiptSaver
 }
 
-func NewReciptCreator(saver ports.Saver) *ReceiptCreator {
+func NewReciptCreator(saver ports.ReceiptSaver) *ReceiptCreator {
 	return &ReceiptCreator{
 		saver,
 	}
 }
 
-func (r ReceiptCreator) Create(ctx context.Context, receiptRequest *dto.ReceiptRequest) (receipt.ReceiptId, error) {
-	receipt, err := receipt.NewReceipt(*receiptRequest)
-	if err != nil {
-		return receipt.ReceiptId, err
-	}
-
-	return r.Save(ctx, receipt)
+func (r *ReceiptCreator) CreateReceipt(ctx context.Context, receipt *receipt.Receipt) (receipt.ReceiptId, error) {
+	return r.SaveReceipt(ctx, receipt)
 }

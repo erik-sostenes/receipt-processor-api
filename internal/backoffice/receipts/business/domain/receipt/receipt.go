@@ -21,7 +21,7 @@ type Receipt struct {
 	Items               item.Items
 }
 
-func NewReceipt(receiptRequest dto.ReceiptRequest) (*Receipt, error) {
+func NewReceipt(receiptRequest *dto.ReceiptRequest) (*Receipt, error) {
 	receiptRetailer, err := NewReceiptRetailer(receiptRequest.Retailer)
 	if err != nil {
 		return &Receipt{}, err

@@ -3,12 +3,13 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/business/services"
+	"github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/business/domain/receipt"
+	"github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/business/ports"
 	"github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/infrastructure/drives/handlers/dto"
 	"github.com/erik-sostenes/receipt-processor-api/pkg/server/response"
 )
 
-func HttpHandlerReceiptsCreator(creator services.ReceiptCreator) http.HandlerFunc {
+func HttpHandlerReceiptsCreator(creator ports.ReceiptCreator) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var request dto.ReceiptRequest
 
@@ -16,7 +17,13 @@ func HttpHandlerReceiptsCreator(creator services.ReceiptCreator) http.HandlerFun
 			return
 		}
 
-		receiptId, err := creator.Create(r.Context(), &request)
+		receipt, err := receipt.NewReceipt(&request)
+		if err != nil {
+			_ = response.ErrorHandler(w, err)
+			return
+		}
+
+		receiptId, err := creator.CreateReceipt(r.Context(), receipt)
 		if err != nil {
 			_ = response.ErrorHandler(w, err)
 			return

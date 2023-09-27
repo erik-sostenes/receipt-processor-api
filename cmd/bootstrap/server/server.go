@@ -10,7 +10,7 @@ import (
 )
 
 func Injector() (*routes.RouteGroup, error) {
-	services := *services.NewReciptCreator(memory.NewReciptInMemory())
+	services := services.NewReciptCreator(memory.NewReciptInMemory())
 
 	routes := routes.NewGroup("/api/v1/receipts", m.CORS, m.Logger, m.Recovery)
 	routes.GET("/health", health.HealthCheck())
