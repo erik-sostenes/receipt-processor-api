@@ -36,7 +36,7 @@ func Bind(w http.ResponseWriter, r *http.Request, body any) (ok bool, err error)
 
 	mediaType, _, err := mime.ParseMediaType(content)
 	if err != nil {
-		_ = JSON(w, http.StatusUnprocessableEntity, Response{
+		_ = JSON(w, http.StatusUnsupportedMediaType, Response{
 			Message: err.Error(),
 		})
 		return
