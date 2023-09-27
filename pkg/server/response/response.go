@@ -28,7 +28,7 @@ func Bind(w http.ResponseWriter, r *http.Request, body any) (ok bool, err error)
 	content := r.Header.Get("Content-type")
 
 	if content == "" {
-		_ = JSON(w, http.StatusUnprocessableEntity, Response{
+		_ = JSON(w, http.StatusUnsupportedMediaType, Response{
 			Message: "missing content type",
 		})
 		return
@@ -49,7 +49,9 @@ func Bind(w http.ResponseWriter, r *http.Request, body any) (ok bool, err error)
 			_ = JSON(w, http.StatusUnprocessableEntity, Response{
 				Message: "the format of the body of the request is malformed",
 			})
+			return ok, err
 		}
+
 		return true, nil
 	default:
 		_ = JSON(w, http.StatusUnsupportedMediaType, Response{

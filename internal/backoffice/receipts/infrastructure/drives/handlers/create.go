@@ -12,16 +12,16 @@ func HttpHandlerReceiptsCreator(creator services.ReceiptCreator) http.HandlerFun
 	return func(w http.ResponseWriter, r *http.Request) {
 		var request dto.ReceiptRequest
 
-		if ok, err := response.Bind(w, r, &request); err != nil || !ok {
+		if ok, err := response.Bind(w, r, &request); err != nil && !ok {
 			return
 		}
 
-		err := creator.Create(r.Context(), &request)
+		receiptId, err := creator.Create(r.Context(), &request)
 		if err != nil {
 			_ = response.ErrorHandler(w, err)
 			return
 		}
 
-		_ = response.JSON(w, http.StatusCreated, nil)
+		_ = response.JSON(w, http.StatusCreated, map[string]any{"id": receiptId.Value()})
 	}
 }

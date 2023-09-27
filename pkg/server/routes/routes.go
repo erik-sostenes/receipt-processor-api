@@ -80,7 +80,7 @@ func (r *RouteGroup) GET(subPath string, handler http.HandlerFunc, m ...Middlewa
 // POST represents a route with its http handler, you will only be able to make http requests of type POST
 func (r *RouteGroup) POST(subPath string, handler http.HandlerFunc, m ...MiddlewareFunc) {
 	r.RouteCollectionExists()
-	r.RouteCollection[r.RootPath][subPath] = r.Route(GET, handler, m...)
+	r.RouteCollection[r.RootPath][subPath] = r.Route(POST, handler, m...)
 }
 
 // PUT represents a route with its http handler, you will only be able to make http requests of type PUT
