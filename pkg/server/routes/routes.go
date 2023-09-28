@@ -30,9 +30,10 @@ type (
 func (route *RouteCollection) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path
 
-	index := strings.LastIndex(path, "/")
-	rootPath := path[:index]
-	subPath := path[index:]
+	rootPath, subPath := splitPath(path)
+	if strings.Contains(subPath, "points") {
+		subPath = "{id}/points"
+	}
 
 	if (*route)[rootPath] == nil || (*route)[rootPath][subPath] == nil {
 		_ = response.JSON(w, http.StatusNotFound, response.Response{
@@ -51,6 +52,22 @@ func (route *RouteCollection) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 	}
 
 	handlerFunc(w, r)
+}
+
+func splitPath(path string) (string, string) {
+	// Buscamos la posición del tercer '/'
+	pos := -1
+	for i := 0; i < len(path); i++ {
+		if path[i] == '/' {
+			pos++
+			if pos == 3 {
+				return path[:i+1], path[i+1:]
+			}
+		}
+	}
+
+	// Si no se encontraron tres '/', devolvemos la cadena original
+	return path, ""
 }
 
 type (

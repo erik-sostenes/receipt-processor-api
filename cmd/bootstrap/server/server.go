@@ -19,11 +19,13 @@ func Injector() (*routes.RouteGroup, error) {
 	}
 
 	collection := mongo.NewMongoReceiptRepository(db.Collection("receipts"))
-	services := services.NewReciptCreator(collection)
+	receiptCreator := services.NewReciptCreator(collection)
+	receiptSearcher := services.NewReceiptSearcher()
 
-	routes := routes.NewGroup("/api/v1/receipts", m.CORS, m.Logger, m.Recovery)
-	routes.GET("/health", health.HealthCheck())
-	routes.POST("/process", handlers.HttpHandlerReceiptsCreator(services))
+	routes := routes.NewGroup("/api/v1/receipts/", m.CORS, m.Logger, m.Recovery)
+	routes.GET("health", health.HealthCheck())
+	routes.POST("process", handlers.HttpHandlerReceiptsCreator(receiptCreator))
+	routes.GET("{id}/points", handlers.HttpHandlerReceiptsSearcher(receiptSearcher))
 
 	return routes, nil
 }
