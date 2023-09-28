@@ -1,6 +1,11 @@
 package receipt
 
-import "github.com/erik-sostenes/receipt-processor-api/pkg/common"
+import (
+	"strings"
+	"unicode"
+
+	"github.com/erik-sostenes/receipt-processor-api/pkg/common"
+)
 
 type ReceiptRetailer struct {
 	value string
@@ -19,4 +24,16 @@ func NewReceiptRetailer(value string) (ReceiptRetailer, error) {
 
 func (r ReceiptRetailer) Value() string {
 	return r.value
+}
+
+func (r ReceiptRetailer) CalculatePoints() uint8 {
+	var accumulate uint8
+
+	for _, v := range strings.ReplaceAll(r.value, " ", "") {
+		if unicode.IsLetter(v) || unicode.IsDigit(v) {
+			accumulate++
+		}
+	}
+
+	return accumulate
 }

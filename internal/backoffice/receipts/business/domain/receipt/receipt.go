@@ -5,6 +5,10 @@ import (
 	"github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/infrastructure/drives/handlers/dto"
 )
 
+type PointsCalculator interface {
+	CalculatePoints() uint8
+}
+
 // DateLayout format the dates
 const DateLayout = "2006-01-02"
 
@@ -19,6 +23,7 @@ type Receipt struct {
 	ReceiptPurchaseTime ReceiptPurchaseTime
 	ReceiptTotal        ReceiptTotal
 	Items               item.Items
+	ReceiptPoints       ReceiptPoints
 }
 
 func NewReceipt(receiptRequest *dto.ReceiptRequest) (receipt *Receipt, err error) {
@@ -56,6 +61,16 @@ func NewReceipt(receiptRequest *dto.ReceiptRequest) (receipt *Receipt, err error
 		return
 	}
 
+	points := []PointsCalculator{
+		receiptRetailer,
+		receiptPurchaseDate,
+		receiptPurchaseTime,
+		receiptTotal,
+		items,
+	}
+
+	receiptPoints := NewReceiptPoints(points...)
+
 	return &Receipt{
 		ReceiptId:           receiptId,
 		ReceiptRetailer:     receiptRetailer,
@@ -63,5 +78,6 @@ func NewReceipt(receiptRequest *dto.ReceiptRequest) (receipt *Receipt, err error
 		ReceiptPurchaseTime: receiptPurchaseTime,
 		ReceiptTotal:        receiptTotal,
 		Items:               items,
+		ReceiptPoints:       *receiptPoints,
 	}, nil
 }

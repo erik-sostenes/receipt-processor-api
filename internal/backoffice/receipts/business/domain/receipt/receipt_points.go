@@ -4,10 +4,16 @@ type ReceiptPoints struct {
 	value uint8
 }
 
-func NewReceiptPoints(value uint8) (ReceiptPoints, error) {
-	return ReceiptPoints{
-		value: value,
-	}, nil
+func NewReceiptPoints(pointsCalculator ...PointsCalculator) *ReceiptPoints {
+	var accumulator uint8
+
+	for _, v := range pointsCalculator {
+		accumulator += v.CalculatePoints()
+	}
+
+	return &ReceiptPoints{
+		value: accumulator,
+	}
 }
 
 func (r ReceiptPoints) Value() uint8 {

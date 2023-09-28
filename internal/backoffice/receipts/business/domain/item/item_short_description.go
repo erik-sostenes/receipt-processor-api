@@ -1,6 +1,8 @@
 package item
 
-import "github.com/erik-sostenes/receipt-processor-api/pkg/common"
+import (
+	"github.com/erik-sostenes/receipt-processor-api/pkg/common"
+)
 
 type ItemShortDescription struct {
 	value string

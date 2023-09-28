@@ -1,6 +1,11 @@
 package item
 
-import "github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/infrastructure/drives/handlers/dto"
+import (
+	"math"
+	"strings"
+
+	"github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/infrastructure/drives/handlers/dto"
+)
 
 type (
 	Item struct {
@@ -10,6 +15,21 @@ type (
 
 	Items []Item
 )
+
+func ToMap(items []dto.ItemRequest) (Items, error) {
+	var i Items
+
+	for _, v := range items {
+		item, err := NewItem(v)
+		if err != nil {
+			return i, err
+		}
+
+		i = append(i, *item)
+	}
+
+	return i, nil
+}
 
 func NewItem(itemRequest dto.ItemRequest) (*Item, error) {
 	itemShortDescription, err := NewItemShortDescription(itemRequest.ShortDescription)
@@ -28,17 +48,26 @@ func NewItem(itemRequest dto.ItemRequest) (*Item, error) {
 	}, nil
 }
 
-func ToMap(items []dto.ItemRequest) (Items, error) {
-	var i Items
+func (i Item) CalculatePoints() uint8 {
+	if len(strings.TrimSpace(i.ItemShortDescription.Value()))%3 == 0 {
+		return uint8(math.Ceil(i.ItemPrice.Value() * 0.2))
+	}
+	return 0
+}
 
-	for _, v := range items {
-		item, err := NewItem(v)
-		if err != nil {
-			return i, err
+func (i Items) CalculatePoints() uint8 {
+	var counter, accumulate uint8
+
+	for _, v := range i {
+		counter++
+
+		accumulate += v.CalculatePoints()
+
+		if counter == 2 {
+			accumulate += 5
+			counter = 0
 		}
-
-		i = append(i, *item)
 	}
 
-	return i, nil
+	return accumulate
 }
