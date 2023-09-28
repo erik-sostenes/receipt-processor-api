@@ -3,7 +3,7 @@ package receipt
 import "github.com/erik-sostenes/receipt-processor-api/pkg/common"
 
 type ReceiptPurchaseDate struct {
-	value int64
+	value string
 }
 
 func NewReceiptPurchaseDate(value string) (ReceiptPurchaseDate, error) {
@@ -12,6 +12,6 @@ func NewReceiptPurchaseDate(value string) (ReceiptPurchaseDate, error) {
 	return ReceiptPurchaseDate{v}, err
 }
 
-func (r ReceiptPurchaseDate) Value() int64 {
+func (r ReceiptPurchaseDate) Value() string {
 	return r.value
 }

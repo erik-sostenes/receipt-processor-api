@@ -49,19 +49,19 @@ func (i Identifier) Validate() (string, error) {
 // Timestamp receives a value to verify if the format is correct
 type Timestamp string
 
-// Validate method validates if the value is a time.Time, if incorrect returns an wrongs.StatusUnprocessableEntity
-func (t Timestamp) Validate(layout string) (int64, error) {
+// Validate method validates if the value is a time.Time, if incorrect returns an wrongs.StatusBadRequest
+func (t Timestamp) Validate(layout string) (string, error) {
 	v, err := time.Parse(layout, string(t))
 	if err != nil {
-		return 0, wrongs.StatusBadRequest(fmt.Sprintf("incorrect %s value format, must be a time value", string(t)))
+		return "", wrongs.StatusBadRequest(fmt.Sprintf("incorrect %s value format, must be a time value", string(t)))
 	}
-	return v.Unix(), nil
+	return v.String(), nil
 }
 
 // String receives a value to verify if the format is correct
 type String string
 
-// The Validate method validates if the value is a string and is not empty, if incorrect returns an wrongs.StatusUnprocessableEntity
+// The Validate method validates if the value is a string and is not empty, if incorrect returns an wrongs.StatusBadRequest
 func (s String) Validate(fieldName string) (string, error) {
 	if strings.TrimSpace(string(s)) == "" {
 		return "", wrongs.StatusBadRequest(fmt.Sprintf("the %s field is missing", fieldName))
@@ -72,7 +72,7 @@ func (s String) Validate(fieldName string) (string, error) {
 // Float receives a value to verify if the format is correct
 type Float string
 
-// Validate method validates if the value is a float, if incorrect returns an errors.StatusUnprocessableEntity
+// Validate method validates if the value is a float, if incorrect returns an errors.StatusBadRequest
 func (f Float) Validate() (float64, error) {
 	v, err := strconv.ParseFloat(string(f), 64)
 	if err != nil {

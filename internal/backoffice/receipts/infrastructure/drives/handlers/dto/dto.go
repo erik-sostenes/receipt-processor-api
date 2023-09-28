@@ -6,6 +6,7 @@ type ItemRequest struct {
 }
 
 type ReceiptRequest struct {
+	Id           string        `json:"_id"`
 	Retailer     string        `json:"retailer"`
 	PurchaseDate string        `json:"purchaseDate"`
 	PurchaseTime string        `json:"purchaseTime"`

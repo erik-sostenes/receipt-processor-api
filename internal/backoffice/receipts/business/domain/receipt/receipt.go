@@ -21,32 +21,43 @@ type Receipt struct {
 	Items               item.Items
 }
 
-func NewReceipt(receiptRequest *dto.ReceiptRequest) (*Receipt, error) {
+func NewReceipt(receiptRequest *dto.ReceiptRequest) (receipt *Receipt, err error) {
+	var receiptId ReceiptId
+
+	if receiptRequest.Id != "" {
+		receiptId, err = NewReceiptId(receiptRequest.Id)
+		if err != nil {
+			return
+		}
+	}
+
 	receiptRetailer, err := NewReceiptRetailer(receiptRequest.Retailer)
 	if err != nil {
-		return &Receipt{}, err
+		return
 	}
 
 	receiptPurchaseDate, err := NewReceiptPurchaseDate(receiptRequest.PurchaseDate)
 	if err != nil {
-		return &Receipt{}, err
+		return
 	}
 
 	receiptPurchaseTime, err := NewReceiptPurchaseTime(receiptRequest.PurchaseTime)
 	if err != nil {
-		return &Receipt{}, err
+		return
 	}
 
 	receiptTotal, err := NewReceiptTotal(receiptRequest.Total)
 	if err != nil {
-		return &Receipt{}, err
+		return
 	}
 
 	items, err := item.ToMap(receiptRequest.ItemsRequest)
 	if err != nil {
-		return &Receipt{}, err
+		return
 	}
+
 	return &Receipt{
+		ReceiptId:           receiptId,
 		ReceiptRetailer:     receiptRetailer,
 		ReceiptPurchaseDate: receiptPurchaseDate,
 		ReceiptPurchaseTime: receiptPurchaseTime,
