@@ -12,8 +12,8 @@ import (
 	"github.com/erik-sostenes/receipt-processor-api/pkg/wrongs"
 )
 
-func TestMongoReceiptRepository_Save(t *testing.T) {
-	type FactoryFunc func() (*MongoReceiptRepository, error)
+func TestReceiptSaverRepository(t *testing.T) {
+	type FactoryFunc func() (*ReceiptSaverRepository, error)
 
 	tsc := map[string]struct {
 		dto.ReceiptRequest
@@ -29,7 +29,7 @@ func TestMongoReceiptRepository_Save(t *testing.T) {
 				PurchaseTime: "08:13",
 				Total:        "2.65",
 			},
-			FactoryFunc: func() (*MongoReceiptRepository, error) {
+			FactoryFunc: func() (*ReceiptSaverRepository, error) {
 				factory := connection.MongoClientFactory{}
 
 				db, err := factory.CreateClient("mongodb://root:password@localhost:27017", "receipts_processor")
@@ -37,7 +37,7 @@ func TestMongoReceiptRepository_Save(t *testing.T) {
 					return nil, err
 				}
 
-				return NewMongoReceiptRepository(db.Collection("receipts_test")), err
+				return NewReceiptSaverRepository(db.Collection("receipts_test")), err
 			},
 			expectedId: "128d0ca8-a70e-4fd4-a43e-6adb25360e57",
 		},
@@ -49,7 +49,7 @@ func TestMongoReceiptRepository_Save(t *testing.T) {
 				PurchaseTime: "08:13",
 				Total:        "2.65",
 			},
-			FactoryFunc: func() (*MongoReceiptRepository, error) {
+			FactoryFunc: func() (*ReceiptSaverRepository, error) {
 				factory := connection.MongoClientFactory{}
 
 				db, err := factory.CreateClient("mongodb://root:password@localhost:27017", "receipts_processor")
@@ -72,7 +72,7 @@ func TestMongoReceiptRepository_Save(t *testing.T) {
 
 				_, err = collection.InsertOne(context.Background(), NewReceipt(receipt))
 
-				return NewMongoReceiptRepository(collection), err
+				return NewReceiptSaverRepository(collection), err
 			},
 			expectedError: wrongs.StatusBadRequest("receipt id '128d0ca8-a70e-4fd4-a43e-6adb25360e57' already exists"),
 		},

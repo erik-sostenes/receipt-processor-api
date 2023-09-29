@@ -2,7 +2,6 @@ package server
 
 import (
 	"github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/business/services"
-	"github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/infrastructure/driven/memory"
 	"github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/infrastructure/driven/mongo"
 	"github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/infrastructure/drives/handlers"
 	connection "github.com/erik-sostenes/receipt-processor-api/pkg/db/mongo"
@@ -21,10 +20,11 @@ func Injector() (*routes.RouteGroup, error) {
 
 	collection := db.Collection("receipts")
 
-	mongoRecepitRepository := mongo.NewMongoReceiptRepository(collection)
+	mongoRecepitRepository := mongo.NewReceiptSaverRepository(collection)
 	receiptCreator := services.NewReciptCreator(mongoRecepitRepository)
 
-	receiptSearcher := services.NewReceiptSearcher(memory.NewReciptInMemory())
+	receiptFinderRepository := mongo.NewReceiptFinderRepository(collection)
+	receiptSearcher := services.NewReceiptSearcher(receiptFinderRepository)
 
 	routes := routes.NewGroup("/api/v1/receipts/", m.CORS, m.Logger, m.Recovery)
 	routes.GET("health", health.HealthCheck())

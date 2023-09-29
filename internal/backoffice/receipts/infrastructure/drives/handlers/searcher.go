@@ -29,6 +29,6 @@ func HttpHandlerReceiptsSearcher(searcher ports.ReceiptSearcher) http.HandlerFun
 			return
 		}
 
-		response.JSON(w, http.StatusOK, common.Map{"points": receiptPoints.Value()})
+		_ = response.JSON(w, http.StatusOK, common.Map{"points": receiptPoints.Value()})
 	}
 }

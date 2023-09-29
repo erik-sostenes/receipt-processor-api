@@ -59,6 +59,7 @@ func Test_HttpHandlerReceiptsCreator(t *testing.T) {
 		"Given an existing valid receipt, a 400 status code is expected": {
 			Request: httptest.NewRequest(http.MethodPut, "/api/v1/receipts/process", strings.NewReader(
 				`{
+					"id": "73ccbff8-6401-4899-bf51-1d0c4e8740d7",
 					"retailer": "Walgreens",
 					"purchaseDate": "2022-01-02",
 					"purchaseTime": "08:13",
@@ -71,6 +72,7 @@ func Test_HttpHandlerReceiptsCreator(t *testing.T) {
 			)),
 			HandlerFunc: func() (http.HandlerFunc, error) {
 				receiptRequest := dto.ReceiptRequest{
+					Id:           "73ccbff8-6401-4899-bf51-1d0c4e8740d7",
 					Retailer:     "Walgreens",
 					PurchaseDate: "2022-01-02",
 					PurchaseTime: "08:13",

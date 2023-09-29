@@ -10,20 +10,20 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// MongoReceiptRepository implements the ports.Saver interface
-var _ ports.ReceiptSaver = &MongoReceiptRepository{}
+// ReceiptSaverRepository implements the ports.ReceiptSaver interface
+var _ ports.ReceiptSaver = &ReceiptSaverRepository{}
 
-type MongoReceiptRepository struct {
+type ReceiptSaverRepository struct {
 	receiptsCollection *mongo.Collection
 }
 
-func NewMongoReceiptRepository(collection *mongo.Collection) *MongoReceiptRepository {
-	return &MongoReceiptRepository{
+func NewReceiptSaverRepository(collection *mongo.Collection) *ReceiptSaverRepository {
+	return &ReceiptSaverRepository{
 		receiptsCollection: collection,
 	}
 }
 
-func (r *MongoReceiptRepository) SaveReceipt(ctx context.Context, rcpt *receipt.Receipt) (_ receipt.ReceiptId, err error) {
+func (r *ReceiptSaverRepository) SaveReceipt(ctx context.Context, rcpt *receipt.Receipt) (_ receipt.ReceiptId, err error) {
 	result, err := r.receiptsCollection.InsertOne(ctx, NewReceipt(rcpt))
 	if err != nil {
 		if ok := mongo.IsDuplicateKeyError(err); ok {

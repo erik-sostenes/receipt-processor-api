@@ -16,6 +16,10 @@ func NewReceiptPoints(pointsCalculator ...PointsCalculator) *ReceiptPoints {
 	}
 }
 
+func (r *ReceiptPoints) Set(value uint8) {
+	r.value = value
+}
+
 func (r ReceiptPoints) Value() uint8 {
 	return r.value
 }
