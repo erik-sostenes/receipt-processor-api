@@ -30,6 +30,7 @@ func NewReceipt(receipt *receipt.Receipt) *Receipt {
 		PurchaseDate: receipt.ReceiptPurchaseDate.Value(),
 		PurchaseTime: receipt.ReceiptPurchaseTime.Value(),
 		Items:        items,
+		TotalPoints:  receipt.ReceiptPoints.Value(),
 	}
 }
 
@@ -39,6 +40,7 @@ type Receipt struct {
 	PurchaseDate string  `bson:"purchase_date,omitempty"`
 	PurchaseTime string  `bson:"purchase_time,omitempty"`
 	Items        []*Item `bson:"items,omitempty"`
+	TotalPoints  uint8   `bson:"total_points, omitempty"`
 }
 
 type Item struct {

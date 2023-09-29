@@ -24,6 +24,6 @@ type (
 	}
 
 	ReceiptFinder interface {
-		FindReceipt(context.Context, string, *receipt.ReceiptId) (receipt.ReceiptPoints, error)
+		FindReceipt(context.Context, *receipt.ReceiptId) (receipt.ReceiptPoints, error)
 	}
 )
