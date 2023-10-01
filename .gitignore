@@ -1,0 +1,13 @@
+### IntelliJ IDEA ###
+.idea
+
+# Vim
+*.swp
+*.swn
+*.swo
+
+# Environments
+.env
+
+### VS Code ###
+.vscode/

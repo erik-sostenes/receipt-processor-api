@@ -3,8 +3,8 @@ package server
 import (
 	"log"
 	"net/http"
-	"os"
 
+	"github.com/erik-sostenes/receipt-processor-api/pkg/common"
 	"github.com/erik-sostenes/receipt-processor-api/pkg/server/routes"
 )
 
@@ -34,7 +34,7 @@ func New(groups ...routes.RouteGroup) *Server {
 }
 
 func (s *Server) Start() error {
-	port := os.Getenv("PORT")
+	port := common.GetEnv("SERVER_PORT")
 	if port == "" {
 		port = defaultPort
 	}

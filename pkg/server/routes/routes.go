@@ -55,7 +55,6 @@ func (route *RouteCollection) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 }
 
 func splitPath(path string) (string, string) {
-	// Buscamos la posición del tercer '/'
 	pos := -1
 	for i := 0; i < len(path); i++ {
 		if path[i] == '/' {
@@ -66,7 +65,6 @@ func splitPath(path string) (string, string) {
 		}
 	}
 
-	// Si no se encontraron tres '/', devolvemos la cadena original
 	return path, ""
 }
 

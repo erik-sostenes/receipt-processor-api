@@ -32,7 +32,7 @@ func TestReceiptSaverRepository(t *testing.T) {
 			FactoryFunc: func() (*ReceiptSaverRepository, error) {
 				factory := connection.MongoClientFactory{}
 
-				db, err := factory.CreateClient("mongodb://root:password@localhost:27017", "receipts_processor")
+				db, err := factory.CreateClient(common.GetEnv("MONGO_DSN"), common.GetEnv("MONGO_DB"))
 				if err != nil {
 					return nil, err
 				}
@@ -52,7 +52,7 @@ func TestReceiptSaverRepository(t *testing.T) {
 			FactoryFunc: func() (*ReceiptSaverRepository, error) {
 				factory := connection.MongoClientFactory{}
 
-				db, err := factory.CreateClient("mongodb://root:password@localhost:27017", "receipts_processor")
+				db, err := factory.CreateClient(common.GetEnv("MONGO_DSN"), common.GetEnv("MONGO_DB"))
 				if err != nil {
 					return nil, err
 				}

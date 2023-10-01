@@ -7,6 +7,7 @@ import (
 
 	"github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/business/domain/receipt"
 	"github.com/erik-sostenes/receipt-processor-api/internal/backoffice/receipts/infrastructure/drives/handlers/dto"
+	"github.com/erik-sostenes/receipt-processor-api/pkg/common"
 	connection "github.com/erik-sostenes/receipt-processor-api/pkg/db/mongo"
 	"github.com/erik-sostenes/receipt-processor-api/pkg/wrongs"
 	"go.mongodb.org/mongo-driver/bson"
@@ -26,7 +27,7 @@ func TestReceiptFinderRepository(t *testing.T) {
 			FactoryFunc: func() (*ReceiptFinderRepository, error) {
 				factory := connection.MongoClientFactory{}
 
-				db, err := factory.CreateClient("mongodb://root:password@localhost:27017", "receipts_processor")
+				db, err := factory.CreateClient(common.GetEnv("MONGO_DSN"), common.GetEnv("MONGO_DB"))
 				if err != nil {
 					return nil, err
 				}
@@ -61,7 +62,7 @@ func TestReceiptFinderRepository(t *testing.T) {
 			FactoryFunc: func() (*ReceiptFinderRepository, error) {
 				factory := connection.MongoClientFactory{}
 
-				db, err := factory.CreateClient("mongodb://root:password@localhost:27017", "receipts_processor")
+				db, err := factory.CreateClient(common.GetEnv("MONGO_DSN"), common.GetEnv("MONGO_DB"))
 				if err != nil {
 					return nil, err
 				}
