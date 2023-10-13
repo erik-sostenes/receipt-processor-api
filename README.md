@@ -41,7 +41,7 @@ Note: this is another option on how to run the tests
 # Load required environment variables
 export $(grep -v ^# .env.example)
 # Run tests
-go go test -v ./...
+go test -v ./...
 ```
 
 ###### Unit tests
@@ -60,7 +60,7 @@ func TestX(t *testing.T) {
 	// Table Driven Testing
 	tdt := []struct{}{
 	    {},	// Test Case
-    }
+    	}
 
 	// Setup
 	x := struct{}{}
