@@ -49,7 +49,7 @@ go test -v ./...
 #### Structure
 
 ```go
-package foo
+package receipt
 
 import (
 	"strconv"
@@ -58,9 +58,9 @@ import (
 
 func TestX(t *testing.T) {
 	// Table Driven Testing
-	tdt := []struct{}{
+	tdt := map[string]struct{}{
 	    {},	// Test Case
-    	}
+    	}{}
 
 	// Setup
 	x := struct{}{}
@@ -69,8 +69,8 @@ func TestX(t *testing.T) {
 	t.Cleanup(func() {})
 
 	// Subtests
-	for i, v := range tdt {
-		t.Run(strconv.Itoa(i), func(t *testing.T){
+	for name, v := range tdt {
+		t.Run(name, func(t *testing.T){
 			t.Log(x, v)
 			// Cleanup function for each subtest (Optional)
 			t.Cleanup(func() {})
